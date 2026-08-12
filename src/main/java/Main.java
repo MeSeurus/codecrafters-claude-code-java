@@ -1,7 +1,13 @@
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.core.JsonValue;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.chat.completions.ChatCompletionFunctionTool;
+import com.openai.models.chat.completions.ChatCompletionTool;
+import tool.ReadTool;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -31,6 +37,7 @@ public class Main {
                 ChatCompletionCreateParams.builder()
                         .model("anthropic/claude-haiku-4.5")
                         .addUserMessage(prompt)
+                        .addTool(new ReadTool().getTool())
                         .build()
         );
 

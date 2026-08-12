@@ -21,5 +21,5 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program runs locally
 # - Edit .codecrafters/run.sh to change how your program runs remotely
-# exec java --enable-native-access=ALL-UNNAMED -jar /tmp/codecrafters-build-claude-code-java/codecrafters-claude-code.jar "$@"
-exec java --enable-native-access=ALL-UNNAMED --enable-preview -jar /tmp/codecrafters-build-claude-code-java/codecrafters-claude-code.jar "$@"
+exec java --enable-native-access=ALL-UNNAMED -jar /tmp/codecrafters-build-claude-code-java/codecrafters-claude-code.jar "$@"
+# exec java --enable-native-access=ALL-UNNAMED --enable-preview -jar /tmp/codecrafters-build-claude-code-java/codecrafters-claude-code.jar "$@"
