@@ -19,7 +19,8 @@ public class ToolProcessor {
         System.out.println("Tool is present? " + String.valueOf(tool.function().isPresent()));
         if (tool.function().isPresent()) {
             functionMap = tool.function().get()._function().asObject().get();
-            if (null != functionMap && functionMap.containsKey(toolNameToProcess)) {
+            System.out.println(functionMap.get("name").asStringOrThrow());
+            if (null != functionMap && functionMap.get("name").asStringOrThrow().equals(toolsList.getFirst().name())) {
                 System.out.println("FunctionMap is: " + functionMap.toString());
                 if (toolsList.getFirst().name().equals(toolNameToProcess)) {
                     result = Map.of(
