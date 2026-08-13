@@ -1,15 +1,13 @@
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.core.JsonValue;
-import com.openai.models.chat.completions.ChatCompletion;
-import com.openai.models.chat.completions.ChatCompletionCreateParams;
-import com.openai.models.chat.completions.ChatCompletionFunctionTool;
-import com.openai.models.chat.completions.ChatCompletionTool;
+import com.openai.models.chat.completions.*;
+import processing.ToolProcessor;
 import tool.ReadTool;
 
-import java.util.List;
+import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) {
         if (args.length < 2 || !"-p".equals(args[0])) {
             System.err.println("Usage: program -p <prompt>");
@@ -41,8 +39,20 @@ public class Main {
                         .build()
         );
 
+        String activeTool = "Read";
+
         if (response.choices().isEmpty()) {
             throw new RuntimeException("no choices in response");
+        } else {
+            ChatCompletionMessageToolCall tool;
+            Map<String, String> result;
+            if (response.choices().getFirst().message().toolCalls().isPresent()) {
+                tool = response.choices().getFirst().message().toolCalls().get().getFirst();
+                result = ToolProcessor.executeSingleToolCall(tool, activeTool);
+                System.out.print(String.join("", result.values()));
+            } else {
+                System.out.print(response.choices().getFirst().message().content().orElse(""));
+            }
         }
 
         // You can use print statements as follows for debugging, they'll be visible when running tests.

@@ -24,4 +24,10 @@ public interface Tool {
      * @return tool definition
      */
     ChatCompletionFunctionTool getTool();
+
+    /**
+     * Execute the instruction given with the tool
+     * @return instruction result
+     */
+    String execute(String argument);
 }
