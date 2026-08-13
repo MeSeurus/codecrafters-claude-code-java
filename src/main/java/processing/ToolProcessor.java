@@ -20,7 +20,6 @@ public class ToolProcessor {
         if (tool.function().isPresent()) {
             functionMap = tool.function().get();
             if (functionMap.function().name().equals(toolsList.getFirst().name())) {
-                System.out.println("FunctionMap is: " + functionMap.toString());
                 if (toolsList.getFirst().name().equals(toolNameToProcess)) {
                     result = Map.of(
                         tool.function().get().id(),
@@ -29,7 +28,6 @@ public class ToolProcessor {
                 }
             }
         }
-        System.out.println(result.toString());
         return result;
     }
 }

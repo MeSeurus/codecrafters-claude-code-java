@@ -48,7 +48,6 @@ public class Main {
             Map<String, String> result;
             if (response.choices().getFirst().message().toolCalls().isPresent()) {
                 tool = response.choices().getFirst().message().toolCalls().get().getFirst();
-                System.out.println("This is the tool: " + tool.toString());
                 result = ToolProcessor.executeSingleToolCall(tool, activeTool);
                 System.out.print(String.join("", result.values()));
             } else {
