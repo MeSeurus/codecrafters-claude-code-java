@@ -41,6 +41,9 @@ public class Main {
 
         String activeTool = "Read";
 
+        // You can use print statements as follows for debugging, they'll be visible when running tests.
+        System.err.println("Logs from your program will appear here!");
+
         if (response.choices().isEmpty()) {
             throw new RuntimeException("no choices in response");
         } else {
@@ -54,10 +57,5 @@ public class Main {
                 System.out.print(response.choices().getFirst().message().content().orElse(""));
             }
         }
-
-        // You can use print statements as follows for debugging, they'll be visible when running tests.
-        System.err.println("Logs from your program will appear here!");
-
-        System.out.print(response.choices().get(0).message().content().orElse(""));
     }
 }
