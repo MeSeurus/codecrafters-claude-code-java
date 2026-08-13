@@ -15,19 +15,18 @@ public class ToolProcessor {
 
     public static Map<String, String> executeSingleToolCall(ChatCompletionMessageToolCall tool, String toolNameToProcess) {
         Map<String, JsonValue> functionMap;
+        Map<String, String> result = Map.of();
         if (tool.function().isPresent()) {
             functionMap = tool.function().get()._function().asObject().orElse(null);
             if (null != functionMap && functionMap.containsKey(toolNameToProcess)) {
-                for (Tool knownTool : toolsList) {
-                    if (knownTool.name().equals(toolNameToProcess)) {
-                        return Map.of(
-                            tool.function().get().id(),
-                            knownTool.execute(tool.function().get().function().arguments())
-                        );
-                    }
+                if (toolsList.getFirst().name().equals(toolNameToProcess)) {
+                    result = Map.of(
+                        tool.function().get().id(),
+                        toolsList.getFirst().execute(tool.function().get().function().arguments())
+                    );
                 }
             }
         }
-        return Map.of();
+        return result;
     }
 }
