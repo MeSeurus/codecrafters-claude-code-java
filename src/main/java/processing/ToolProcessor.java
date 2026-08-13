@@ -27,6 +27,7 @@ public class ToolProcessor {
                 }
             }
         }
+        System.out.println(result.toString());
         return result;
     }
 }
