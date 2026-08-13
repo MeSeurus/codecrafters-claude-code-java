@@ -31,7 +31,7 @@ public class ReadTool implements Tool {
      */
     @Override
     public String name() {
-        return "Read";
+        return ActiveTools.READ.name();
     }
 
     /**
@@ -39,7 +39,7 @@ public class ReadTool implements Tool {
      */
     @Override
     public String description() {
-        return "Read and return the contents of a file";
+        return ActiveTools.READ.getDescription();
     }
 
     /**

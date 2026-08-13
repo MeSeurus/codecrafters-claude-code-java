@@ -2,6 +2,7 @@ import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.chat.completions.*;
 import processing.ToolProcessor;
+import tool.ActiveTools;
 import tool.ReadTool;
 
 import java.util.*;
@@ -39,8 +40,6 @@ public class Main {
                         .build()
         );
 
-        String activeTool = "Read";
-
         // You can use print statements as follows for debugging, they'll be visible when running tests.
         System.err.println("Logs from your program will appear here!");
 
@@ -51,7 +50,7 @@ public class Main {
             Map<String, String> result;
             if (response.choices().getFirst().message().toolCalls().isPresent()) {
                 tool = response.choices().getFirst().message().toolCalls().get().getFirst();
-                result = ToolProcessor.executeSingleToolCall(tool, activeTool);
+                result = ToolProcessor.executeSingleToolCall(tool, ActiveTools.READ.name());
                 System.out.print(String.join("", result.values()));
             } else {
                 System.out.print(response.choices().getFirst().message().content().orElse(""));
