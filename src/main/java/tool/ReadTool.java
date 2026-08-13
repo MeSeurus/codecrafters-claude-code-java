@@ -31,7 +31,7 @@ public class ReadTool implements Tool {
      */
     @Override
     public String name() {
-        return ActiveTools.READ.name();
+        return ActiveTools.READ.getName();
     }
 
     /**

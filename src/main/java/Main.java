@@ -50,7 +50,7 @@ public class Main {
             Map<String, String> result;
             if (response.choices().getFirst().message().toolCalls().isPresent()) {
                 tool = response.choices().getFirst().message().toolCalls().get().getFirst();
-                result = ToolProcessor.executeSingleToolCall(tool, ActiveTools.READ.name());
+                result = ToolProcessor.executeSingleToolCall(tool, ActiveTools.READ.getName());
                 System.out.print(String.join("", result.values()));
             } else {
                 System.out.print(response.choices().getFirst().message().content().orElse(""));

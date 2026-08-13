@@ -5,7 +5,6 @@ import lombok.Getter;
 /**
  * List of tools and their status
  */
-@Getter
 public enum ActiveTools {
 
     READ("Read", "Read and return the contents of a file", true);
@@ -18,5 +17,17 @@ public enum ActiveTools {
         this.name = name;
         this.description = description;
         this.isActive = isActive;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }
