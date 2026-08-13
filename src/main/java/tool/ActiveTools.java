@@ -1,12 +1,10 @@
 package tool;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * List of tools and their status
  */
-@AllArgsConstructor
 @Getter
 public enum ActiveTools {
 
@@ -16,4 +14,9 @@ public enum ActiveTools {
     private final String description;
     private final boolean isActive;
 
+    ActiveTools(String name, String description, boolean isActive) {
+        this.name = name;
+        this.description = description;
+        this.isActive = isActive;
+    }
 }
