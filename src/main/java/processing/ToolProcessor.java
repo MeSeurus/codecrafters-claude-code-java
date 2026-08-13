@@ -16,9 +16,11 @@ public class ToolProcessor {
     public static Map<String, String> executeSingleToolCall(ChatCompletionMessageToolCall tool, String toolNameToProcess) {
         Map<String, JsonValue> functionMap;
         Map<String, String> result = Map.of();
+        System.out.println("Tool is present? " + String.valueOf(tool.function().isPresent()));
         if (tool.function().isPresent()) {
             functionMap = tool.function().get()._function().asObject().orElse(null);
             if (null != functionMap && functionMap.containsKey(toolNameToProcess)) {
+                System.out.println("FunctionMap is: " + functionMap.toString());
                 if (toolsList.getFirst().name().equals(toolNameToProcess)) {
                     result = Map.of(
                         tool.function().get().id(),
