@@ -1,16 +1,12 @@
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.chat.completions.*;
-import lombok.Getter;
 
 import java.util.List;
 
 public class ChatInteractor {
 
     private OpenAIClient client;
-
-    @Getter
-    private ChatCompletionMessage message;
 
     public ChatInteractor(String prompt, List<ChatCompletionFunctionTool> toolsList) {
         String apiKey = System.getenv("OPENROUTER_API_KEY");
@@ -51,6 +47,10 @@ public class ChatInteractor {
         return client.chat().completions().create(
             ChatCompletionCreateParams.builder().build()
         );
+    }
+
+    public ChatCompletionMessage getMessage() {
+        return message;
     }
 
 }
