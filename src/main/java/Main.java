@@ -17,44 +17,45 @@ public class Main {
 
         String prompt = args[1];
 
-        String apiKey = System.getenv("OPENROUTER_API_KEY");
-        String baseUrl = System.getenv("OPENROUTER_BASE_URL");
-        if (baseUrl == null || baseUrl.isEmpty()) {
-            baseUrl = "https://openrouter.ai/api/v1";
-        }
-
-        if (apiKey == null || apiKey.isEmpty()) {
-            throw new RuntimeException("OPENROUTER_API_KEY is not set");
-        }
-
-        OpenAIClient client = OpenAIOkHttpClient.builder()
-                .apiKey(apiKey)
-                .baseUrl(baseUrl)
-                .build();
-
-        ChatCompletion response = client.chat().completions().create(
-                ChatCompletionCreateParams.builder()
-                        .model("anthropic/claude-haiku-4.5")
-                        .addUserMessage(prompt)
-                        .addTool(new ReadTool().getTool())
-                        .build()
-        );
-
         // You can use print statements as follows for debugging, they'll be visible when running tests.
         System.err.println("Logs from your program will appear here!");
 
-        if (response.choices().isEmpty()) {
-            throw new RuntimeException("no choices in response");
-        } else {
-            ChatCompletionMessageToolCall tool;
-            Map<String, String> result;
-            if (response.choices().getFirst().message().toolCalls().isPresent()) {
-                tool = response.choices().getFirst().message().toolCalls().get().getFirst();
-                result = ToolProcessor.executeSingleToolCall(tool, ActiveTools.READ.getName());
-                System.out.print(String.join("", result.values()));
-            } else {
-                System.out.print(response.choices().getFirst().message().content().orElse(""));
-            }
+        ChatInteractor chatInteractor =
+            new ChatInteractor(prompt, Collections.singletonList(new ReadTool().getTool()));
+
+        List<ChatCompletionToolMessageParam> toolResults = new ArrayList<>();
+
+        processInteractiveSession(chatInteractor, toolResults,0);
+
+        System.out.println(chatInteractor.getMessage().content().orElse("could not find an answer"));
+    }
+
+
+    private static void processInteractiveSession(ChatInteractor chatInteractor,
+                                                  List<ChatCompletionToolMessageParam> toolResults,
+                                                  int step) {
+        if (step != 0) {
+            toolResults.clear();
+        }
+        ChatCompletionMessage message;
+        ChatCompletion response = chatInteractor.getResponse();
+        message = response.choices().getFirst().message();
+        chatInteractor.addMessage(message.toParam());
+
+        if (message.toolCalls().isPresent()) {
+            toolResults.addAll(message.toolCalls().get().stream()
+                .map(
+                    tool -> {
+                        Optional<ChatCompletionToolMessageParam> param = ToolProcessor.executeSingleToolCall(tool, new ReadTool().name());
+                        return param.orElse(null);
+                    })
+                .filter(Objects::nonNull)
+                .toList()
+            );
+            chatInteractor.addToolCallResults(toolResults);
+        }
+        if (!toolResults.isEmpty()) {
+            processInteractiveSession(chatInteractor, toolResults, ++step);
         }
     }
 }
